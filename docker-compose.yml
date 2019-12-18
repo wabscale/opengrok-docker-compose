@@ -1,0 +1,32 @@
+version: '2'
+
+# More info at https://github.com/oracle/opengrok/docker/
+services:
+  opengrok:
+    image: opengrok/docker:latest
+    environment:
+      REINDEX: '0'
+    # Volumes store your data between container upgrades
+    volumes:
+       - '.data/opengrok-src/:/opengrok/src/'  # source code
+       - '.data/opengrok-etc/:/opengrok/etc/'  # folder contains configuration.xml
+       - '.data/opengrok-data/:/opengrok/data/'  # index and other things for source code
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.opengrok-http.rule=Host(`grok.bigj.dev`)"
+      - "traefik.http.routers.opengrok-http.entrypoints=http"
+      - "traefik.http.routers.opengrok-http.middlewares=redirect"
+
+      - "traefik.http.routers.opengrok.rule=Host(`grok.bigj.dev`)"
+      - "traefik.http.routers.opengrok.entrypoints=https"
+      - "traefik.http.routers.opengrok.tls.certresolver=tls"
+      - "traefik.http.services.opengrok.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.opengrok.redirectscheme.scheme=https"
+    networks:
+      - traefik-proxy
+
+networks:
+  traefik-proxy:
+    external:
+      name: traefik-proxy
