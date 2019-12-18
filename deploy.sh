@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $(dirname $(realpath $0))
+
 check_deps() {
     local DIRS
     DIRS=(
