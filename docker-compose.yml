@@ -14,11 +14,11 @@ services:
     labels:
       - "traefik.enable=true"
 
-      - "traefik.http.routers.opengrok-http.rule=Host(`grok.bigj.dev`)"
+      - "traefik.http.routers.opengrok-http.rule=Host(`grok.athena.sh`)"
       - "traefik.http.routers.opengrok-http.entrypoints=http"
       - "traefik.http.routers.opengrok-http.middlewares=redirect"
 
-      - "traefik.http.routers.opengrok.rule=Host(`grok.bigj.dev`)"
+      - "traefik.http.routers.opengrok.rule=Host(`grok.athena.sh`)"
       - "traefik.http.routers.opengrok.entrypoints=https"
       - "traefik.http.routers.opengrok.tls.certresolver=tls"
       - "traefik.http.services.opengrok.loadbalancer.server.port=8080"
