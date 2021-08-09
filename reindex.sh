@@ -1,9 +1,11 @@
 #!/bin/sh
 
-#if ! docker-compose ps | grep 'Up' &> /dev/null; then
-#    echo
-#    echo '  start the opengrok container plz'
-#    echo
-#fi
+set -x
+
+for i in $(find .data/opengrok-src -maxdepth 2 -name '.git' -type d); do
+    cd $(dirname $i)
+    git pull
+    cd ../../../
+done
 
 docker-compose -f ../docker-compose.yml exec opengrok /scripts/index.sh
